@@ -341,12 +341,14 @@ def render_ranks (graph, ranks, dot_file="graph.dot"):
     #plt.savefig(img_file)
     #plt.show()
 
-
-def text_rank (path):
+def text_rank (object_or_path):
     """
     run the TextRank algorithm
     """
-    graph = build_graph(json_iter(path))
+    if isinstance(object_or_path, str):
+        graph = build_graph(json_iter(object_or_path))
+    else:
+        graph = build_graph(object_or_path)
     ranks = nx.pagerank(graph)
 
     return graph, ranks
