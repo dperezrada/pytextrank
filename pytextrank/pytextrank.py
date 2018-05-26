@@ -190,7 +190,7 @@ def parse_graf (doc_id, graf_text, base_idx, spacy_nlp=None):
 
     markup = []
     new_base_idx = base_idx
-    doc = spacy_nlp(graf_text, parse=True)
+    doc = spacy_nlp(graf_text)
 
     for span in doc.sents:
         graf = []
@@ -217,7 +217,7 @@ def parse_graf (doc_id, graf_text, base_idx, spacy_nlp=None):
         for tok_text, tok_lemma, tok_pos, tok_tag in corrected_words:
             word = WordNode(word_id=0, raw=tok_text, root=tok_text.lower(), pos=tok_tag, keep=0, idx=new_base_idx)
 
-            if is_not_word(tok_text) or (tok_tag == "SYM"):
+            if is_not_word(tok_text) or (tok_tag == "SYM") or not tok_tag:
                 # a punctuation, or other symbol
                 pos_family = '.'
                 word = word._replace(pos=pos_family)
@@ -420,7 +420,7 @@ def enumerate_chunks (phrase, spacy_nlp):
     if (len(phrase) > 1):
         found = False
         text = " ".join([rl.text for rl in phrase])
-        doc = spacy_nlp(text.strip(), parse=True)
+        doc = spacy_nlp(text.strip())
 
         for np in doc.noun_chunks:
             if np.text != text:
